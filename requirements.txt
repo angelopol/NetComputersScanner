@@ -1,0 +1,2 @@
+rich
+# scapy  # (optional: install for higher accuracy ARP scanning)

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NetComScan"
+version = "0.1.0"
+description = "A network scanner to identify microcontrollers like Raspberry Pi and Orange Pi."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "rich",
+]
+
+[project.optional-dependencies]
+scapy = ["scapy"]
+
+[project.scripts]
+netcomscan = "NetComScan.scanner:main"
