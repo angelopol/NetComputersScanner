@@ -10,9 +10,15 @@ from rich.table import Table
 
 # Known MAC OUIs for microcontrollers
 MICROCONTROLLER_MAPPING = {
+    # Raspberry Pi
     "B8:27:EB": "Raspberry Pi Foundation",
     "DC:A6:32": "Raspberry Pi Foundation",
     "E4:5F:01": "Raspberry Pi Foundation",
+    "28:CD:C1": "Raspberry Pi Foundation",
+    "D8:3A:DD": "Raspberry Pi Foundation",
+    "88:A2:5E": "Raspberry Pi Foundation",
+    "88:A2:9E": "Raspberry Pi Foundation",
+    # Orange Pi
     "DC:44:6D": "Shenzhen Xunlong Software (Orange Pi)",
 }
 
@@ -141,7 +147,14 @@ def main():
         with ThreadPoolExecutor(max_workers=20) as executor:
             enriched_devices = list(executor.map(process_device, unique_devices))
             
+    # Filter to show only identified microcontrollers / devices with pi-like names
+    filtered_devices = []
     for device in enriched_devices:
+        hostname_lower = device["hostname"].lower()
+        if device["type"] != "Unknown Device" or "raspberry" in hostname_lower or "orange" in hostname_lower:
+            filtered_devices.append(device)
+
+    for device in filtered_devices:
         table.add_row(
             device["ip"],
             device["mac"],
@@ -149,8 +162,12 @@ def main():
             device["type"]
         )
             
-    console.print(table)
-    console.print(f"\n[bold green]Scan complete. Found {len(enriched_devices)} devices.[/bold green]")
+    if not filtered_devices:
+        console.print("[yellow]No microcontrollers found on the network. Make sure they are powered on and connected.[/yellow]")
+    else:
+        console.print(table)
+        
+    console.print(f"\n[bold green]Scan complete. Found {len(filtered_devices)} microcontrollers (out of {len(enriched_devices)} total devices active).[/bold green]")
 
 if __name__ == "__main__":
     main()

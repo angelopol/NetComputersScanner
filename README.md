@@ -35,6 +35,23 @@ The main dependency is `rich`. For better accuracy, you can optionally install `
 pip install scapy
 ```
 
+## Updating
+
+If you have already installed the package and want to update to the latest version:
+
+### If installed from GitHub
+```bash
+pip install --upgrade git+https://github.com/angelopol/NetComputersScanner.git
+```
+
+### If installed from Source
+```bash
+# Navigate to the project folder
+git pull
+pip install --upgrade .
+```
+*(Note: If you used `pip install -e .`, you only need to `git pull` to get the latest changes).*
+
 ## Usage
 
 Once installed, you can run the scanner in two ways:
